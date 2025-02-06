@@ -3,6 +3,7 @@ import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 import prettier from "eslint-plugin-prettier";
 import prettierConfig from "eslint-config-prettier";
+import { env } from "process";
 
 export default [
   js.configs.recommended,
@@ -11,6 +12,11 @@ export default [
     languageOptions: {
       parser: tsparser,
     },
+    env:{
+      ...env,
+      node: true,
+    }
+    ,
     plugins: {
       "@typescript-eslint": tseslint,
       prettier,
@@ -20,7 +26,7 @@ export default [
       "prettier/prettier": "error",
       "@typescript-eslint/no-unused-vars": ["warn"],
       "@typescript-eslint/explicit-function-return-type": "off",
-      "no-console": "warn",
+      //"no-console": "warn", //for production and deploy only
     },
   },
   prettierConfig,
