@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  nombres        String
+  apellidos      String
+  email          String   @unique
+  dni            String   @unique
+  direccion      String
+  hashed_pasword String
+  fecha_nac      DateTime
+  role           String   @default("cliente")
+
+  solicitudes_tecnico Solicitud[] @relation("tecnico")
+  solicitudes_cliente Solicitud[] @relation("cliente")
+}
+
+model Solicitud {
+  id         Int      @id @default(autoincrement())
+  title      String
+  fecha      DateTime @default(now())
+  estado     String   @default("pendiente")
+  tecnico_id Int
+  cliente_id Int
+  tecnico    User     @relation("tecnico", fields: [tecnico_id], references: [id])
+  cliente    User     @relation("cliente", fields: [cliente_id], references: [id])
+
+  Solicitud_Product Solicitud_Product[]
+}
+
+model Product {
+  id          Int    @id @default(autoincrement())
+  name        String
+  price       Float
+  stock       Int
+  description String
+  image       String
+
+  Solicitud_Product Solicitud_Product[]
+}
+
+model Solicitud_Product {
+  id           Int       @id @default(autoincrement())
+  solicitud_id Int
+  product_id   Int
+  cantidad     Int
+  solicitud    Solicitud @relation(fields: [solicitud_id], references: [id])
+  product      Product   @relation(fields: [product_id], references: [id])
+}
