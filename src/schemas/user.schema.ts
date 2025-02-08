@@ -1,12 +1,9 @@
 import {z} from 'zod';
 
 export const LoginUserSchema = z.object({
-    username: z.string({
-        invalid_type_error: 'Username must be a string',
-        required_error: 'Username is required'
-    }).min(4,{
-        message: 'Username must be at least 4 characters'
-    }), 
+    email: z.string().email({
+        message: 'Invalid email address'
+    }),
     password: z.string({
         invalid_type_error: 'Password must be a string',
         required_error: 'Password is required'
@@ -15,19 +12,29 @@ export const LoginUserSchema = z.object({
     })
 })
 
-export const PrivateUserSchema = z.object({
-    username: z.string({
-        required_error: 'Username is required',
-        invalid_type_error: 'Username must be a string',
-    }).nonempty(), 
-    email: z.string().email({
-        message: 'Invalid email address'
-    }).nonempty(),
-    password: z.string({
-        required_error: 'Password is required',
-        invalid_type_error: 'Password must be a string',
-    }).min(8).nonempty()
+export const UserRegisterSchema = z.object({
+    id: z.number(),
+    nombres: z.string(),
+    apellidos: z.string(),
+    email: z.string().email(),
+    dni: z.string(),
+    direccion: z.string(),
+    password: z.string(),
+    fecha_nac: z.string(),
+    rol : z.string(),
 })
 
-export type PublicUser = z.infer<typeof LoginUserSchema>
-export type Privateuser = z.infer<typeof PrivateUserSchema>
+export const PublicUser = z.object({
+    id: z.number(),
+    nombres: z.string(),
+    apellidos: z.string(),
+    email: z.string().email(),
+    dni: z.string(),
+    direccion: z.string(),
+    fecha_nac: z.string(),
+    rol : z.string(),
+})
+
+export type LoginUser = z.infer<typeof LoginUserSchema>;
+export type UserRegister = z.infer<typeof UserRegisterSchema>;
+export type PublicUserType = z.infer<typeof PublicUser>;

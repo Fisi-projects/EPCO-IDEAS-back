@@ -1,19 +1,14 @@
 import express from 'express';
-import { LoginUserSchema } from '../schemas/user.schema';
+import { AuthService } from '../services/auth.service';
 
 const router = express.Router();
 
-router.post('/login', (req, res) => {
-    const validUser = LoginUserSchema.safeParse(req.body);
-    if(!validUser.success) {
-        res.status(400).json({error: validUser.error.errors.map(err => err.message)});
+router.post('/login', async (req, res) => {
+    const {user, error, status} = await AuthService.login(req.body);
+    if(error){
+        res.status(status).json({message:error});
     }
-    res.status(200).json(validUser.data);
-})
-
-router.post('/register', (req, res) => {
-    const {username, password, email} = req.body;
-    res.status(200).json({username, password, email});
+    res.status(status).json(user);
 })
 
 export default router;
