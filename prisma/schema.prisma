@@ -16,10 +16,12 @@ model User {
   apellidos      String
   email          String   @unique
   dni            String   @unique
-  direccion      String
+  direccion      String?
+  telefono       String?
+  disponibilidad String?
   hashed_pasword String
   fecha_nac      DateTime
-  role           String   @default("cliente")
+  role           String
 
   solicitudes_tecnico Solicitud[] @relation("tecnico")
   solicitudes_cliente Solicitud[] @relation("cliente")

@@ -12,29 +12,24 @@ export const LoginUserSchema = z.object({
     })
 })
 
-export const UserRegisterSchema = z.object({
-    id: z.number(),
+export const AdminRegisterSchema = z.object({
     nombres: z.string(),
     apellidos: z.string(),
     email: z.string().email(),
-    dni: z.string(),
-    direccion: z.string(),
+    dni: z.string().min(8),
     password: z.string(),
     fecha_nac: z.string(),
     rol : z.string(),
 })
 
-export const PublicUser = z.object({
+export const PublicUserSchema = z.object({
     id: z.number(),
     nombres: z.string(),
     apellidos: z.string(),
-    email: z.string().email(),
-    dni: z.string(),
-    direccion: z.string(),
-    fecha_nac: z.string(),
-    rol : z.string(),
+    email : z.string().email(),
+    role : z.string(),
 })
 
 export type LoginUser = z.infer<typeof LoginUserSchema>;
-export type UserRegister = z.infer<typeof UserRegisterSchema>;
-export type PublicUserType = z.infer<typeof PublicUser>;
+export type AdminRegister = z.infer<typeof AdminRegisterSchema>;
+export type PublicUser = z.infer<typeof PublicUserSchema>;
