@@ -31,7 +31,8 @@ model Solicitud {
   id         Int      @id @default(autoincrement())
   title      String
   fecha      DateTime @default(now())
-  estado     String   @default("pendiente")
+  estado     String   @default("activo") //o finalizado
+  descripcion String
   tecnico_id Int
   cliente_id Int
   tecnico    User     @relation("tecnico", fields: [tecnico_id], references: [id])
@@ -55,7 +56,6 @@ model Solicitud_Product {
   id           Int       @id @default(autoincrement())
   solicitud_id Int
   product_id   Int
-  cantidad     Int
   solicitud    Solicitud @relation(fields: [solicitud_id], references: [id])
   product      Product   @relation(fields: [product_id], references: [id])
 }
