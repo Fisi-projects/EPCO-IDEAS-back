@@ -35,4 +35,12 @@ router.put('/update/:id', async (req, res) => {
     res.status(status).json(product);
 })
 
+router.delete('/delete/:id', async (req, res) => {
+    const { message, error, status } = await ProductoService.deleteProduct(Number(req.params.id));
+    if (error) {
+        res.status(status).json({ message: error });
+    }
+    res.status(status).json({ message });
+})
+
 export default router;

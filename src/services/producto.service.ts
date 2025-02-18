@@ -71,7 +71,7 @@ export class ProductoService {
     static async deleteProduct(id: number) {
         try {
             await prisma.product.delete({ where: { id } });
-            return { status: 204 };
+            return { message: 'product deleted', status: 204 };
         } catch (error) {
             console.log(error);
             return { error: 'something went wrong :(', status: 500 };
