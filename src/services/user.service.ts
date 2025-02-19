@@ -1,5 +1,5 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { AdminRegisterSchema, PublicUserSchema } from "../schemas/user.schema";
+import { AdminRegisterSchema, ClienteRegisterSchema, PublicUserSchema } from "../schemas/user.schema";
 import prisma from "../utils/connection";
 import bcrypt from 'bcrypt';
 
@@ -47,5 +47,46 @@ export class UserService{
             console.log(error);
             return {error: 'something went wrong :(', status: 500};
         }
+    }
+
+
+    static registerCliente = async (userData: Object) => {
+        const result = ClienteRegisterSchema.safeParse(userData);
+        if (!result.success) {
+          return { 
+            user: null, error: result.error.errors, status: 400 
+        };
+        }
+        const { email, nombres, apellidos, dni, fecha_nac, direccion, telefono } = result.data;
+        try {
+          const newCliente = await prisma.user.create({
+            data: {
+              email,
+              nombres,
+              apellidos,
+              dni,
+              fecha_nac,
+              direccion,
+              telefono,
+              role: 'cliente',
+              hashed_pasword: await bcrypt.hash('12345678', 10) //No necesaria contraseña para un cliente (no es usuario)
+            }
+          });
+          PublicUserSchema.parse(newCliente);
+          return { 
+            user: newCliente, status: 201 
+          };
+
+        } catch (error) {
+          console.log(error);
+          if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
+            return { 
+                error: 'Email or DNI already exists', status: 400 
+            };
+          }
+
+          return { error: 'Error al registrar cliente', status: 500 };
+        }
+        
     }
 }

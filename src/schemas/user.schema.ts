@@ -30,6 +30,16 @@ export const PublicUserSchema = z.object({
     role : z.string(),
 })
 
+export const ClienteRegisterSchema = z.object({
+    nombres: z.string(),
+    apellidos: z.string(),
+    email: z.string().email(),
+    dni: z.string(),
+    direccion: z.string().optional(),
+    telefono: z.string().optional(),
+    fecha_nac: z.string(),
+});
+
 export type LoginUser = z.infer<typeof LoginUserSchema>;
 export type AdminRegister = z.infer<typeof AdminRegisterSchema>;
 export type PublicUser = z.infer<typeof PublicUserSchema>;
