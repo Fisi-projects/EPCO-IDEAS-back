@@ -1,5 +1,6 @@
 import { ProductoSchema, ProductoCreateSchema, ProductoUpdateSchema, ProductoCreate } from "../schemas/producto.schema";
 import prisma from "../utils/connection";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 export class ProductoService {
     static async getAllProducts() {
@@ -25,14 +26,42 @@ export class ProductoService {
         }
     }
 
-    static async createProduct(productData: ProductoCreate) {
-        const result = ProductoCreateSchema.safeParse(productData);
-        if (!result.success) {
-            return { product: null, error: result.error.errors, status: 400 };
+    static async createProduct(productData: ProductoCreate, storage: any, upload: any, req: any) {
+
+        if (!req.file) {
+            return { product: null, error: 'File not provided', status: 400 };
         }
 
+        const dateTime = new Date().toISOString();
+        const storageRef = ref(storage, `files/${req.file.originalname + dateTime}`);
+
+        const metadata = {
+            contentType: req.file.mimetype,
+        };
+
         try {
-            const newProduct = await prisma.product.create({ data: result.data });
+
+            const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
+
+            const downloadURL = await getDownloadURL(snapshot.ref);
+    
+            const result = ProductoCreateSchema.safeParse({
+                ...productData,
+                price: parseFloat(productData.price.toString()), // ignorar lo obvio xdxd
+                stock: parseInt(productData.stock.toString(), 10),
+                image: downloadURL
+            });
+            
+            if (!result.success) {
+                return { product: null, error: result.error.errors, status: 400 };
+            }
+
+            const newProduct = await prisma.product.create({ 
+                data: { 
+                    ...result.data, 
+                    image: downloadURL 
+                } 
+            });
             return { product: ProductoSchema.parse(newProduct), status: 201 };
         } catch (error) {
             console.log(error);

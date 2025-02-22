@@ -6,7 +6,7 @@ export const ProductoSchema = z.object({
     price: z.number().positive(),
     stock: z.number().int().positive(),
     description: z.string().min(1).max(255),
-    image: z.string().url(),
+    image: z.string(),
 })
 
 export const ProductoCreateSchema = z.object({
@@ -14,7 +14,7 @@ export const ProductoCreateSchema = z.object({
     price: z.number().positive(),
     stock: z.number().int().positive(),
     description: z.string().min(1).max(255),
-    image: z.string().url(),
+    image: z.string(),
 })
 
 export const ProductoUpdateSchema = z.object({
@@ -22,7 +22,7 @@ export const ProductoUpdateSchema = z.object({
     price: z.number().positive().optional(),
     stock: z.number().int().positive().optional(),
     description: z.string().min(1).max(255).optional(),
-    image: z.string().url().optional(),
+    image: z.string().optional(),
 })
 
 
