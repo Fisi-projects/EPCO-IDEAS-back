@@ -1,7 +1,17 @@
 import express from 'express';
 import { ProductoService } from '../services/producto.service';
+import multer from 'multer';
+import { getStorage } from "firebase/storage"
+import { initializeApp } from 'firebase/app';
+import config from '../config/firebase.config';
 
 const router = express.Router();
+
+initializeApp(config.firebaseConfig);
+
+const storage = getStorage();
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/all', async (_req, res) => {
     const { products, error, status } = await ProductoService.getAllProducts();
@@ -19,8 +29,8 @@ router.get('/:id', async (req, res) => {
     res.status(status).json(product);
 })
 
-router.post('/create', async (req, res) => {
-    const { product, error, status } = await ProductoService.createProduct(req.body);
+router.post('/create', upload.single('image'), async (req, res) => {
+    const { product, error, status } = await ProductoService.createProduct(req.body, storage, upload, req);
     if (error) {
         res.status(status).json({ message: error });
     }
