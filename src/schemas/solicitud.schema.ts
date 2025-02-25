@@ -4,7 +4,10 @@ export const SolicitudTableSchema = z.object({
   id: z.number(),
   title: z.string(),
   cliente_nombre: z.string(),
+  cliente_celular: z.string(),
+  fecha: z.string(),
   productos_nombres: z.string().array(),
+  descripcion: z.string(),
   estado: z.string(),
   tecnico_nombre: z.string()
 })

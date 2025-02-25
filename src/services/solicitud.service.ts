@@ -21,9 +21,12 @@ export class SolicitudService {
         id: solicitud.id,
         title: solicitud.title,
         cliente_nombre: solicitud.cliente.nombres + ' ' + solicitud.cliente.apellidos,
+        cliente_celular: solicitud.cliente.telefono,
         productos_nombres: solicitud.Solicitud_Product.map(sp => sp.product.name),
         estado: solicitud.estado,
-        tecnico_nombre: solicitud.tecnico.nombres + ' ' + solicitud.tecnico.apellidos
+        tecnico_nombre: solicitud.tecnico.nombres + ' ' + solicitud.tecnico.apellidos,
+        descripcion: solicitud.descripcion,
+        fecha: solicitud.fecha.toString()
       }));
 
       const validatedSolicitudes = solicitudesFormateadas.map(
