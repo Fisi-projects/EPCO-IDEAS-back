@@ -18,4 +18,13 @@ router.get('/all', async (_req, res) => {
     }
     res.status(status).json(users);
 })
+
+router.get('/clientes/all', async (_req, res) => {
+    const{clientes, error, status} = await UserService.getAllClientes();
+    if(error){
+        res.status(status).json({message:error});
+    }
+    res.status(status).json(clientes);
+})
+
 export default router;

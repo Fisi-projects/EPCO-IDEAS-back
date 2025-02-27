@@ -89,4 +89,20 @@ export class UserService{
         }
         
     }
+
+    static getAllClientes = async () => {
+        try {
+          const clientes = await prisma.user.findMany({
+            where: {
+              role: 'cliente'
+            }
+          });
+          return { 
+            clientes: clientes.map(cliente => PublicUserSchema.parse(cliente)), status: 200 
+          };
+        } catch (error) {
+          console.log(error);
+          return { error: 'something went wrong :(', status: 500 };
+        }
+    }
 }
