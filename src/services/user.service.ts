@@ -179,6 +179,7 @@ export class UserService {
             telefono,
             fecha_nac,
             role: 'tecnico',
+            disponibilidad: "activo",
             hashed_pasword: await bcrypt.hash('tecnicopass', 10)
           }
         });
