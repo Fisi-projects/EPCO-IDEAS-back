@@ -37,8 +37,13 @@ router.post('/create', upload.single('image'), async (req, res) => {
     res.status(status).json(product);
 })
 
-router.put('/update/:id', async (req, res) => {
-    const { product, error, status } = await ProductoService.updateProduct(Number(req.params.id), req.body);
+router.put('/update/:id', upload.single('image'), async (req, res) => {
+    const productData = {
+        ...req.body,
+        price: req.body.price ? parseFloat(req.body.price) : undefined,
+        stock: req.body.stock ? parseInt(req.body.stock, 10) : undefined,
+    };
+    const { product, error, status } = await ProductoService.updateProduct(Number(req.params.id), productData, storage, req);
     if (error) {
         res.status(status).json({ message: error });
     }

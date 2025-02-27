@@ -1,4 +1,4 @@
-import { ProductoSchema, ProductoCreateSchema, ProductoUpdateSchema, ProductoCreate } from "../schemas/producto.schema";
+import { ProductoSchema, ProductoCreateSchema, ProductoUpdateSchema, ProductoCreate, ProductoUpdate } from "../schemas/producto.schema";
 import prisma from "../utils/connection";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
@@ -69,20 +69,46 @@ export class ProductoService {
         }
     }
 
-    static async updateProduct(id: number, productData: Object) {
+    static async updateProduct(id: number, productData: ProductoUpdate, storage: any, req: any) {
         const product = await prisma.product.findUnique({ where: { id } });
         if (!product) {
             return { error: 'Product not found', status: 404 };
         }
 
-        const result = ProductoUpdateSchema.safeParse(productData);
+        let imageUrl = product.image;
+
+        if (req.file) {
+            const dateTime = new Date().toISOString();
+            const storageRef = ref(storage, `files/${req.file.originalname + dateTime}`);
+
+            const metadata = {
+                contentType: req.file.mimetype,
+            };
+
+            try {
+                const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
+                imageUrl = await getDownloadURL(snapshot.ref);
+            } catch (error) {
+                console.log('Image upload error:', error);
+                return { error: 'Image upload failed', status: 500 };
+            }
+        }
+
+
+        const result = ProductoUpdateSchema.safeParse({
+            ...productData,
+            image: imageUrl
+        });
         if (!result.success) {
             return { product: null, error: result.error.errors, status: 400 };
         }
 
         try {
             const updatedProduct = await prisma.product.update({
-                where: { id }, data: {
+                where: { 
+                    id 
+                }, 
+                data: {
                     name: result.data.name ?? product.name,
                     price: result.data.price ?? product.price,
                     stock: result.data.stock ?? product.stock,
@@ -92,7 +118,6 @@ export class ProductoService {
             });
             return { product: ProductoSchema.parse(updatedProduct), status: 200 };
         } catch (error) {
-            console.log(error);
             return { error: 'something went wrong :(', status: 500 };
         }
     }
