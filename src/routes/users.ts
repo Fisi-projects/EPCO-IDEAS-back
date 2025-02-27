@@ -27,7 +27,7 @@ router.get('/clientes/all', async (_req, res) => {
     res.status(status).json(clientes);
 })
 
-router.get('/tecnicos/nombres', async (_req, res) => {
+router.get('/tecnico/nombres', async (_req, res) => {
     const { tecnicos, error, status } = await UserService.getAllNombresTecnicos();
     if (error) {
         res.status(status).json({ message: error });
