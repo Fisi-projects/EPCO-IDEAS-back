@@ -9,7 +9,8 @@ export const SolicitudTableSchema = z.object({
   productos_nombres: z.string().array(),
   descripcion: z.string(),
   estado: z.string(),
-  tecnico_nombre: z.string()
+  tecnico_nombre: z.string(),
+  tecnico_id: z.number()
 })
 
 export const SolicitudDetailsSchema = z.object({

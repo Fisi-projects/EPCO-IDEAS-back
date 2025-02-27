@@ -26,7 +26,8 @@ export class SolicitudService {
         estado: solicitud.estado,
         tecnico_nombre: solicitud.tecnico.nombres + ' ' + solicitud.tecnico.apellidos,
         descripcion: solicitud.descripcion,
-        fecha: solicitud.fecha.toString()
+        fecha: solicitud.fecha.toString(),
+        tecnico_id: solicitud.tecnico_id
       }));
 
       const validatedSolicitudes = solicitudesFormateadas.map(
