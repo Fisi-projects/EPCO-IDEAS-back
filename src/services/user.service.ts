@@ -105,4 +105,24 @@ export class UserService{
           return { error: 'something went wrong :(', status: 500 };
         }
     }
+
+    static getAllNombresTecnicos = async () => {
+        try {
+          const tecnicos = await prisma.user.findMany({
+            where: {
+              role: 'tecnico'
+            }
+          });
+            return { 
+              tecnicos: tecnicos.map(tecnico => ({ 
+                id: tecnico.id, 
+                nombreCompleto: tecnico.nombres + ' ' + tecnico.apellidos 
+              })), 
+              status: 200 
+            };
+        } catch (error) {
+          console.log(error);
+          return { error: 'something went wrong :(', status: 500 };
+        }
+    }
 }
