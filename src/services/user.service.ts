@@ -127,6 +127,7 @@ export class UserService {
   }
 
   static async getAllTecnicos() {
+    console.log()
     try {
       const tecnicos = await prisma.user.findMany({
         where: {
@@ -134,7 +135,8 @@ export class UserService {
         }
       });
       return {
-        tecnicos: tecnicos.map(tecnico => TecnicoSchema.parse(tecnico)), status: 200
+        tecnicos: tecnicos.map(tecnico => TecnicoSchema.parse(tecnico)), 
+        status: 200
       };
     } catch (error) {
       console.log(error);

@@ -40,6 +40,16 @@ export const ClienteRegisterSchema = z.object({
     fecha_nac: z.coerce.date(),
 });
 
+export const publicTecnico = z.object({
+    id: z.number(),
+    nombres: z.string(),
+    apellidos: z.string(),
+    email: z.string().email(),
+    dni: z.string(),
+    telefono: z.string(),
+    fecha_nac: z.coerce.date(),
+});
+
 export const TecnicoSchema = z.object({
     id: z.number(),
     nombres: z.string(),
@@ -75,3 +85,4 @@ export type ClienteRegister = z.infer<typeof ClienteRegisterSchema>;
 export type Tecnico = z.infer<typeof TecnicoSchema>;
 export type CreateTecnico = z.infer<typeof CreateTecnicoSchema>;
 export type UpdateTecnico = z.infer<typeof UpdateTecnicoSchema>;
+export type PublicTecnico = z.infer<typeof publicTecnico>;
