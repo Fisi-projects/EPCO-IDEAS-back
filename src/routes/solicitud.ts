@@ -73,4 +73,23 @@ router.delete('/delete/:id', async (req: any, res: any) => {
   }
 });
 
+router.get('/pdf/:id', async (req: any, res: any) => {
+  try {
+    const id = Number(req.params.id);
+    const result = await SolicitudService.generateSolicitudPdf(id);
+    
+    if ('error' in result) {
+      return res.status(result.status).json({ message: result.error });
+    }
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=solicitud_${id}.pdf`);
+    
+    res.send(result.pdf);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default router;
