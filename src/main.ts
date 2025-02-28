@@ -6,6 +6,7 @@ import userRouter from './routes/users';
 import solicitudRouter from './routes/solicitud';
 import productoRouter from './routes/producto';
 import 'dotenv/config'
+import swaggerDocs from './utils/swagger';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -21,4 +22,6 @@ app.use('/productos', productoRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at port: ${PORT}`);
+
+  swaggerDocs(app, PORT);
 });

@@ -6,6 +6,27 @@ import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /auth/login:
+ *   post:
+ *     tags:
+ *      - Auth
+ *     summary: Login a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginUser'
+ *     responses:
+ *       200:
+ *         description: User created
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Something went wrong :(
+ */
 router.post('/login',async (req, res) =>{
     const validCredential = LoginUserSchema.safeParse(req.body);
     if(!validCredential.success){

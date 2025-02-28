@@ -1,5 +1,141 @@
 import { z } from 'zod';
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     LoginUser:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           default: pedro2@example.com
+ *         password:
+ *           type: string
+ *           format: password
+ *           default: password123
+ *     AdminRegister:
+ *       type: object
+ *       required:
+ *         - nombres
+ *         - apellidos
+ *         - email
+ *         - dni
+ *         - password
+ *         - fecha_nac
+ *         - rol
+ *       properties:
+ *         nombres:
+ *           type: string
+ *         apellidos:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         dni:
+ *           type: string
+ *           length: 8
+ *         password:
+ *           type: string
+ *         fecha_nac:
+ *           type: string
+ *           format: date
+ *         rol:
+ *           type: string
+ *     PublicUser:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         nombres:
+ *           type: string
+ *         apellidos:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         role:
+ *           type: string
+ *     ClienteRegister:
+ *       type: object
+ *       required:
+ *         - nombres
+ *         - apellidos
+ *         - email
+ *         - dni
+ *         - fecha_nac
+ *       properties:
+ *         nombres:
+ *           type: string
+ *         apellidos:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         dni:
+ *           type: string
+ *           length: 8
+ *         direccion:
+ *           type: string
+ *         telefono:
+ *           type: string
+ *           length: 9
+ *           pattern: '^9'
+ *         fecha_nac:
+ *           type: string
+ *           format: date
+ *     CreateTecnico:
+ *       type: object
+ *       required:
+ *         - nombres
+ *         - apellidos
+ *         - email
+ *         - dni
+ *         - telefono
+ *         - fecha_nac
+ *       properties:
+ *         nombres:
+ *           type: string
+ *         apellidos:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         dni:
+ *           type: string
+ *           length: 8
+ *         telefono:
+ *           type: string
+ *           length: 9
+ *           pattern: '^9'
+ *         fecha_nac:
+ *           type: string
+ *           format: date
+ *     UpdateTecnico:
+ *       type: object
+ *       properties:
+ *         nombres:
+ *           type: string
+ *         apellidos:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         dni:
+ *           type: string
+ *           length: 8
+ *         telefono:
+ *           type: string
+ *           length: 9
+ *           pattern: '^9'
+ *         fecha_nac:
+ *           type: string
+ *           format: date
+ */
 export const LoginUserSchema = z.object({
     email: z.string().email({
         message: 'Invalid email address'

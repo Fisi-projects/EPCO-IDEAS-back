@@ -1,5 +1,60 @@
 import { z } from 'zod';
 
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Producto:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         price:
+ *           type: number
+ *         stock:
+ *           type: integer
+ *         description:
+ *           type: string
+ *         image:
+ *           type: string
+ *     ProductoCreate:
+ *       type: object
+ *       required:
+ *         - name
+ *         - price
+ *         - stock
+ *         - description
+ *         - image
+ *       properties:
+ *         name:
+ *           type: string
+ *         price:
+ *           type: number
+ *         stock:
+ *           type: integer
+ *         description:
+ *           type: string
+ *         image:
+ *           type: string
+ *           format: binary
+ *     ProductoUpdate:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         price:
+ *           type: number
+ *         stock:
+ *           type: integer
+ *         description:
+ *           type: string
+ *         image:
+ *           type: string
+ *           format: binary
+ */
 export const ProductoSchema = z.object({
     id: z.number().int().positive(),
     name: z.string().min(1).max(100),

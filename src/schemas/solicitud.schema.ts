@@ -1,5 +1,102 @@
 import {z} from 'zod';
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     SolicitudTable:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         title:
+ *           type: string
+ *         cliente_nombre:
+ *           type: string
+ *         cliente_celular:
+ *           type: string
+ *         fecha:
+ *           type: string
+ *         productos_nombres:
+ *           type: array
+ *           items:
+ *             type: string
+ *         descripcion:
+ *           type: string
+ *         estado:
+ *           type: string
+ *         tecnico_nombre:
+ *           type: string
+ *         tecnico_id:
+ *           type: integer
+ *     SolicitudDetails:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *         cliente_nombre:
+ *           type: string
+ *         cliente_celular:
+ *           type: string
+ *         fecha:
+ *           type: string
+ *         productos_nombres:
+ *           type: array
+ *           items:
+ *             type: string
+ *         descripcion:
+ *           type: string
+ *         estado:
+ *           type: string
+ *         tecnico_nombre:
+ *           type: string
+ *     SolicitudCreated:
+ *       type: object
+ *       required:
+ *         - title
+ *         - cliente_id
+ *         - fecha
+ *         - descripcion
+ *         - estado
+ *         - tecnico_id
+ *         - productos
+ *       properties:
+ *         title:
+ *           type: string
+ *         cliente_id:
+ *           type: integer
+ *         fecha:
+ *           type: string
+ *         descripcion:
+ *           type: string
+ *         estado:
+ *           type: string
+ *         tecnico_id:
+ *           type: integer
+ *         productos:
+ *           type: array
+ *           items:
+ *             type: integer
+ *     SolicitudUpdate:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *         fecha:
+ *           type: string
+ *         descripcion:
+ *           type: string
+ *         estado:
+ *           type: string
+ *         cliente_id:
+ *           type: integer
+ *         tecnico_id:
+ *           type: integer
+ *         productos:
+ *           type: array
+ *           items:
+ *             type: integer
+ */
 export const SolicitudTableSchema = z.object({
   id: z.number(),
   title: z.string(),
@@ -43,3 +140,8 @@ export const SolicitudUpdateSchema = z.object({
   tecnico_id: z.number().optional(),
   productos: z.number().array().optional()
 })
+
+export type SolicitudTable = z.infer<typeof SolicitudTableSchema>;
+export type SolicitudDetails = z.infer<typeof SolicitudDetailsSchema>;
+export type SolicitudCreated = z.infer<typeof SolicitudCreatedSchema>;
+export type SolicitudUpdate = z.infer<typeof SolicitudUpdateSchema>;

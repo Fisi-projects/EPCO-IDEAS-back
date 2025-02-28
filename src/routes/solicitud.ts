@@ -3,6 +3,19 @@ import { SolicitudService } from '../services/solicitud.service';
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /solicitudes/table:
+ *   get:
+ *     tags:
+ *       - Solicitud
+ *     summary: Get all solicitudes in table format
+ *     responses:
+ *       200:
+ *         description: List of solicitudes
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/table', async (req: any, res: any) => {
   try {
     const solicitudes = await SolicitudService.getAllSolicitudesInTable();
@@ -18,6 +31,27 @@ router.get('/table', async (req: any, res: any) => {
   }
 });
 
+/**
+ * @openapi
+ * /solicitudes/details/{id}:
+ *   get:
+ *     tags:
+ *       - Solicitud
+ *     summary: Get solicitud details by ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Solicitud details
+ *       404:
+ *         description: Solicitud not found
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/details/:id', async (req, res) => {
   const solicitud = await SolicitudService.getSolicitudDetails(Number(req.params.id));
   
@@ -27,6 +61,27 @@ router.get('/details/:id', async (req, res) => {
   res.status(200).json(solicitud);
 });
 
+/**
+ * @openapi
+ * /solicitudes/create:
+ *   post:
+ *     tags:
+ *       - Solicitud
+ *     summary: Create a new solicitud
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SolicitudCreated'
+ *     responses:
+ *       201:
+ *         description: Solicitud created successfully
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/create', async (req: any, res: any) => {
 
   const { solicitudData, clienteData } = req.body;
@@ -47,6 +102,35 @@ router.post('/create', async (req: any, res: any) => {
   }
 });
 
+/**
+ * @openapi
+ * /solicitudes/update/{id}:
+ *   put:
+ *     tags:
+ *       - Solicitud
+ *     summary: Update a solicitud
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SolicitudUpdate'
+ *     responses:
+ *       200:
+ *         description: Solicitud updated successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Solicitud not found
+ *       500:
+ *         description: Internal server error
+ */
 router.put('/update/:id', async (req: any, res: any) => {
   try {
     const solicitud = await SolicitudService.updateSolicitud(Number(req.params.id), req.body);
@@ -60,6 +144,27 @@ router.put('/update/:id', async (req: any, res: any) => {
   }
 });
 
+/**
+ * @openapi
+ * /solicitudes/delete/{id}:
+ *   delete:
+ *     tags:
+ *       - Solicitud
+ *     summary: Delete a solicitud
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Solicitud deleted successfully
+ *       404:
+ *         description: Solicitud not found
+ *       500:
+ *         description: Internal server error
+ */
 router.delete('/delete/:id', async (req: any, res: any) => {
   try {
     const solicitud = await SolicitudService.deleteSolicitud(Number(req.params.id));
@@ -73,6 +178,27 @@ router.delete('/delete/:id', async (req: any, res: any) => {
   }
 });
 
+/**
+ * @openapi
+ * /solicitudes/pdf/{id}:
+ *   get:
+ *     tags:
+ *       - Solicitud
+ *     summary: Generate PDF for a solicitud
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: PDF generated successfully
+ *       404:
+ *         description: Solicitud not found
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/pdf/:id', async (req: any, res: any) => {
   try {
     const id = Number(req.params.id);
